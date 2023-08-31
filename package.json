@@ -1,6 +1,6 @@
 {
   "name": "@arc-iac/tf-cdk-spa",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "main.js",
   "types": "main.ts",
   "license": "MPL-2.0",
@@ -27,6 +27,7 @@
   "dependencies": {
     "@cdktf/provider-aws": "^13.0.0",
     "cdktf": "^0.15.5",
+    "cdktf-cli": "^0.15.0",
     "constructs": "^10.2.26",
     "dotenv": "^16.0.3",
     "mime-types": "^2.1.35",
