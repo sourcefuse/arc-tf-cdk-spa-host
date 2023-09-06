@@ -18,14 +18,83 @@ Before you begin, ensure you have the following prerequisites in place:
 npm install @arc-iac/tf-cdk-spa
 ```
 
+## Migrating from v1 -> v2
+
+The class name `CloudFrontStaticWebsiteStack` has been updated to `CloudfrontSPAWebsiteStack`. The `CloudFrontSPAWebsiteStack` is now more suitable for deploying websites with a single index document, which is often the case for Single Page Applications (SPAs) built using technologies like React.
+
+If you need to deploy a static website that has multiple index documents, you can use the `CloudfrontStaticWebsiteStack` class. More details on usage can be found in the [exports section](#exports).
+
+## Exports
+
+This package exports the following classes:
+
+1. [CloudFrontSPAWebsiteStack](#cloudfrontspawebsitestack)
+2. [CloudfrontStaticWebsiteStack](#cloudfrontstaticwebsitestack)
+
+### CloudFrontSPAWebsiteStack
+
+The `CloudFrontSPAWebsiteStack` class allows you to easily set up and deploy Single Page Applications (SPAs) with a single index document using AWS CloudFront, S3, OAC, ACM, and Route 53. This stack simplifies the deployment process and ensures your SPA is highly available and globally accessible.
+
+#### Usage example
+
+```typescript
+import { CloudfrontStaticWebsiteStack } from "@arc-iac/tf-cdk-spa";
+import { App } from "cdktf";
+
+const app = new App();
+new CloudfrontStaticWebsiteStack(app, "spa-host");
+app.synth();
+```
+
+### CloudfrontStaticWebsiteStack
+
+The `CloudfrontStaticWebsiteStack` class provides a flexible and robust solution for hosting static websites on AWS using CloudFront, S3, ACM, and Route 53. This stack is ideal for deploying websites with multiple directories, each having its own index document.
+
+#### Usage Example
+
+```typescript
+import { CloudfrontStaticWebsiteStack } from "@arc-iac/tf-cdk-spa";
+
+// Create an instance of the CloudfrontStaticWebsiteStack
+const staticWebsiteStack = new CloudfrontStaticWebsiteStack(
+  app,
+  "MyStaticWebsiteStack"
+);
+
+// Customize the stack's configuration as needed
+// You can choose to skip this step and use the default configuration.
+staticWebsiteStack.awsConfig = {
+  region: "us-west-2",
+  profile: "my-aws-profile",
+};
+
+staticWebsiteStack.s3BucketConfig = {
+  bucket: "my-static-website-bucket",
+  tags: {
+    Terraform: "true",
+    Environment: "prod",
+  },
+};
+
+// Initialize and deploy the stack
+staticWebsiteStack.init();
+```
+
 ## Usage
 
-The following example demonstrates how to deploy an SPA using this package:
+The following example demonstrates how to deploy a site (using the default configurations used in this package).
 
-1. [Create a cdk entrypoint file](#create-a-file-for-cdk-entrypoint)
-2. [Configure the Environment Variables](#configure-the-environment-variables)
-3. [Deploy the infrastructure](#deploy-the-infrastructure)
-4. [Verify the deployment](#verify-the-deployment)
+1. [Choose a suitable Class](#choose-a-suitable-class)
+2. [Create a cdk entrypoint file](#create-a-file-for-cdk-entrypoint)
+3. [Create a cdktf.json file](#create-a-cdktfjson-file)
+4. [Configure the Environment Variables](#configure-the-environment-variables)
+5. [Deploy the infrastructure](#deploy-the-infrastructure)
+6. [Verify the deployment](#verify-the-deployment)
+
+### Choose a suitable class
+
+Select a suitable class for your use case. More on classes in [exports section](#exports).
+In this example I have used `CloudfrontStaticWebsiteStack` but you may choose as per your need.
 
 ### Create a file for CDK entrypoint
 
@@ -33,15 +102,30 @@ To establish the CDK entry point, you'll need to create a TypeScript file named 
 Add the following TypeScript code:
 
 ```typescript
-import { CloudFrontStaticWebsiteStack } from "@arc-iac/tf-cdk-spa";
+import { CloudfrontStaticWebsiteStack } from "@arc-iac/tf-cdk-spa";
 import { App } from "cdktf";
 
 const app = new App();
-new CloudFrontStaticWebsiteStack(app, "spa-host"); // You can change the stack name ("spa-host") as needed.
+new CloudfrontStaticWebsiteStack(app, "spa-host"); // You can change the stack name ("spa-host") as needed.
 app.synth();
 ```
 
 This code initializes an instance of the App class, then creates an instance of your custom CloudFrontStaticWebsiteStack. You can tailor the stack name by changing the second argument of the new CloudFrontStaticWebsiteStack() line ("spa-host" in this example). Lastly, the app.synth() function generates the Terraform configuration based on your CDK code.
+
+### Create a cdktf.json file
+
+A cdktf project requires a cdktf.json file. Using the cdktf.json file you can supply custom configuration settings for your application.
+You can use the following content in your cdktf.json
+
+```json
+{
+  "language": "typescript",
+  "app": "npx ts-node main.ts",
+  "projectId": "a-random-uuid"
+}
+```
+
+You can learn more about cdktf.json [here](https://developer.hashicorp.com/terraform/cdktf/create-and-deploy/configuration-file).
 
 ### Configure the [Environment Variables](#environment-variables)
 
