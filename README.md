@@ -1,6 +1,8 @@
-# AWS SPA Deployment with CDKTF
+# AWS Static and Single-Page Application (SPA) Deployment with CDKTF
 
-Easily deploy your Single-Page Application to Amazon Web Services (AWS) S3 and CloudFront using the Cloud Development Kit for Terraform (CDKTF) with TypeScript. This package streamlines the process by utilizing the Cloud Development Kit (CDK) to define AWS resources.
+Simplify the deployment of your static websites and Single-Page Applications (SPAs) to Amazon Web Services (AWS) S3 and CloudFront using the Cloud Development Kit for Terraform (CDKTF) with TypeScript. This package leverages the power of the Cloud Development Kit (CDK) to define and manage AWS resources effortlessly.
+
+With support for both traditional static websites and modern SPAs, including flexible routing options, our toolkit makes it easier than ever to host and deploy your web applications on AWS infrastructure. Take advantage of AWS S3 and CloudFront's performance, scalability, and reliability while streamlining your deployment workflow.
 
 ## Prerequisites
 
@@ -38,11 +40,11 @@ The `CloudFrontSPAWebsiteStack` class allows you to easily set up and deploy Sin
 #### Usage example
 
 ```typescript
-import { CloudfrontStaticWebsiteStack } from "@arc-iac/tf-cdk-spa";
+import { CloudFrontSPAWebsiteStack } from "@arc-iac/tf-cdk-spa";
 import { App } from "cdktf";
 
 const app = new App();
-new CloudfrontStaticWebsiteStack(app, "spa-host");
+new CloudFrontSPAWebsiteStack(app, "spa-host");
 app.synth();
 ```
 
@@ -102,15 +104,15 @@ To establish the CDK entry point, you'll need to create a TypeScript file named 
 Add the following TypeScript code:
 
 ```typescript
-import { CloudfrontStaticWebsiteStack } from "@arc-iac/tf-cdk-spa";
+import { CloudFrontSPAWebsiteStack } from "@arc-iac/tf-cdk-spa";
 import { App } from "cdktf";
 
 const app = new App();
-new CloudfrontStaticWebsiteStack(app, "spa-host"); // You can change the stack name ("spa-host") as needed.
+new CloudFrontSPAWebsiteStack(app, "spa-host"); // You can change the stack name ("spa-host") as needed.
 app.synth();
 ```
 
-This code initializes an instance of the App class, then creates an instance of your custom CloudFrontStaticWebsiteStack. You can tailor the stack name by changing the second argument of the new CloudFrontStaticWebsiteStack() line ("spa-host" in this example). Lastly, the app.synth() function generates the Terraform configuration based on your CDK code.
+This code initializes an instance of the App class, then creates an instance of your custom `CloudFrontSPAWebsiteStack`. You can tailor the stack name by changing the second argument of the new `CloudFrontSPAWebsiteStack()` line ("spa-host" in this example). Lastly, the app.synth() function generates the Terraform configuration based on your CDK code.
 
 ### Create a cdktf.json file
 
@@ -157,14 +159,15 @@ After successful deployment, access your SPA through the custom domain specified
 
 The deployment process relies on several environment variables. Create a `.env` file in the project's root directory and set the following variables:
 
-| Environment Variable         | Default Value | Description                                      |
-| ---------------------------- | ------------- | ------------------------------------------------ |
-| `AWS_REGION`                 | `us-east-1`   | AWS region for deployment                        |
-| `AWS_PROFILE`                | `default`     | AWS profile for authentication and authorization |
-| `S3_BUCKET_NAME`             | N/A           | S3 bucket name for storing SPA files             |
-| `CUSTOM_DOMAIN`              | N/A           | Custom domain for the SPA                        |
-| `HOSTED_ZONE_ID`             | N/A           | Route 53 hosted zone ID for the custom domain    |
-| `RELATIVE_PATH_TO_BUILD_DIR` | `../build`    | Relative path to the SPA build directory         |
+| Environment Variable         | Default Value | Description                                                                                                                                 |
+| ---------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AWS_REGION`                 | `us-east-1`   | AWS region for deployment                                                                                                                   |
+| `AWS_PROFILE`                | `default`     | AWS profile for authentication and authorization                                                                                            |
+| `S3_BUCKET_NAME`             | N/A           | S3 bucket name for storing SPA files                                                                                                        |
+| `CUSTOM_DOMAIN`              | N/A           | Custom domain for the SPA                                                                                                                   |
+| `HOSTED_ZONE_ID`             | N/A           | Route 53 hosted zone ID for the custom domain                                                                                               |
+| `RELATIVE_PATH_TO_BUILD_DIR` | `../build`    | Relative path to the SPA build directory                                                                                                    |
+| `REFERER_SECRET`             | N/A           | A secret key used in the HTTP headers to control access to your s3 bucket objects (Required only for `CloudfrontStaticWebsiteStack` class). |
 
 If any variables are not provided, the default values mentioned above will be used.
 
