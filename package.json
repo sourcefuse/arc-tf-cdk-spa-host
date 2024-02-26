@@ -1,8 +1,8 @@
 {
   "name": "@arc-iac/tf-cdk-spa",
   "version": "2.0.0",
-  "main": "main.js",
-  "types": "main.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MPL-2.0",
   "keywords": [
     "arc",
@@ -25,10 +25,10 @@
     "node": ">=14.0"
   },
   "dependencies": {
-    "@cdktf/provider-aws": "^13.0.0",
-    "cdktf": "^0.15.5",
-    "cdktf-cli": "^0.16.0",
-    "constructs": "^10.2.26",
+    "@cdktf/provider-aws": "^19.6.0",
+    "cdktf": "^0.20.3",
+    "cdktf-cli": "^0.20.3",
+    "constructs": "^10.3.0",
     "dotenv": "^16.0.3",
     "mime-types": "^2.1.35",
     "uniqid": "^5.4.0"
@@ -55,8 +55,7 @@
   "files": [
     "README.md",
     "!*/__tests__",
-    "main.js",
-    "main.ts",
-    "helper"
+    "dist",
+    "src"
   ]
 }
